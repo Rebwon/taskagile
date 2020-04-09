@@ -1,5 +1,5 @@
 {
-  "src_folders" : ["tests"],
+  "src_folders" : ["./tests"],
   "output_folder" : "reports",
   "custom_assertions_path" : "",
   "globals_path" : "",
@@ -9,13 +9,13 @@
   "test_workers" : false,
 
   "selenium" : {
-    "start_process" : false,
-    "server_path" : "",
-    "log_path" : "",
+    "start_process" : true,
+    "server_path" : "./node_modules/selenium-server/lib/runner/selenium-server-standalone-3.141.59.jar",
+    "log_path" : "reports",
     "host" : "127.0.0.1",
     "port" : 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "node_modules/chromedriver/lib/chromedriver/chromedriver.exe",
+      "webdriver.chrome.driver" : "./node_modules/chromedriver/lib/chromedriver/chromedriver.exe",
       "webdriver.ie.driver" : ""
     }
   },
@@ -23,7 +23,7 @@
   "test_settings" : {
     "default" : {
       "launch_url" : "http://localhost",
-      "selenium_host" : "127.0.0.1",
+      "selenium_host" : "localhost",
       "selenium_port" : 4444,
       "silent" : true,
       "disable_colors": false,
