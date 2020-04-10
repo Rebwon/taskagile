@@ -5,7 +5,9 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.rebwon.taskagile.domain.application.commands.RegistrationCommand;
 import com.rebwon.taskagile.domain.application.impl.UserServiceImpl;
@@ -15,6 +17,7 @@ import com.rebwon.taskagile.domain.model.user.RegistrationException;
 import com.rebwon.taskagile.domain.model.user.RegistrationManagement;
 import com.rebwon.taskagile.domain.model.user.UsernameExistsException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 	@Mock private RegistrationManagement registrationManagementMock;
 	@Mock private DomainEventPublisher domainEventPublisherMock;
