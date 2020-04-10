@@ -14,14 +14,12 @@ import com.rebwon.taskagile.domain.model.user.UsernameExistsException;
 import com.rebwon.taskagile.web.payload.RegistrationPayload;
 import com.rebwon.taskagile.web.results.ApiResult;
 import com.rebwon.taskagile.web.results.Result;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class RegistrationApiController {
-	private UserService userService;
-
-	public RegistrationApiController(UserService userService) {
-		this.userService = userService;
-	}
+	private final UserService userService;
 
 	@PostMapping("/api/registrations")
 	public ResponseEntity<ApiResult> register(@Valid @RequestBody RegistrationPayload payload) {
