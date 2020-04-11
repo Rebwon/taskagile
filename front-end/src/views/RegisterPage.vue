@@ -43,7 +43,7 @@
       </div>
     </div>
     <footer class="footer">
-      <span class="copyright">&copy; 2018 TaskAgile.com</span>
+      <span class="copyright">&copy; 2020 TaskAgile.com</span>
       <ul class="footer-links list-inline float-right">
         <li class="list-inline-item"><a href="#">About</a></li>
         <li class="list-inline-item"><a href="#">Terms of Service</a></li>
@@ -97,7 +97,7 @@ export default {
         return
       }
       registrationService.register(this.form).then(() => {
-        this.$router.push({name: 'LoginPage'})
+        this.$router.push({ name: 'LoginPage' })
       }).catch((error) => {
         this.errorMessage = 'Failed to register user. ' + error.message
       })

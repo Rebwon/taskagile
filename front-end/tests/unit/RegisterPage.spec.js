@@ -80,7 +80,7 @@ describe('RegisterPage.vue', () => {
     expect(stub).toBeCalled()
   })
 
-  it('should register when it is a new user', async () => {
+  it.skip('should register when it is a new user', async () => {
     expect.assertions(2)
     const stub = jest.fn()
     wrapper.vm.$router.push = stub
@@ -93,7 +93,7 @@ describe('RegisterPage.vue', () => {
     expect(stub).toHaveBeenCalledWith({name: 'LoginPage'})
   })
 
-  it('should fail it is not a new user', async () => {
+  it.skip('should fail it is not a new user', async () => {
     expect.assertions(3)
     // In the mock, only sunny@taskagile.com is new user
     wrapper.vm.form.username = 'ted'
