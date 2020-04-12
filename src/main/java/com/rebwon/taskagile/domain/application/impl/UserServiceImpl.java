@@ -1,8 +1,11 @@
 package com.rebwon.taskagile.domain.application.impl;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import com.rebwon.taskagile.domain.application.UserService;
 import com.rebwon.taskagile.domain.application.commands.RegistrationCommand;
@@ -11,22 +14,37 @@ import com.rebwon.taskagile.domain.common.mail.MailManager;
 import com.rebwon.taskagile.domain.common.mail.MessageVariable;
 import com.rebwon.taskagile.domain.model.user.RegistrationException;
 import com.rebwon.taskagile.domain.model.user.RegistrationManagement;
+import com.rebwon.taskagile.domain.model.user.SimpleUser;
 import com.rebwon.taskagile.domain.model.user.User;
+import com.rebwon.taskagile.domain.model.user.UserRepository;
 import com.rebwon.taskagile.domain.model.user.events.UserRegisteredEvent;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-	private RegistrationManagement registrationManagement;
-	private DomainEventPublisher domainEventPublisher;
-	private MailManager mailManager;
+	private final RegistrationManagement registrationManagement;
+	private final DomainEventPublisher domainEventPublisher;
+	private final MailManager mailManager;
+	private final UserRepository userRepository;
 
-	public UserServiceImpl(RegistrationManagement registrationManagement,
-		DomainEventPublisher domainEventPublisher, MailManager mailManager) {
-		this.registrationManagement = registrationManagement;
-		this.domainEventPublisher = domainEventPublisher;
-		this.mailManager = mailManager;
-	}
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    if(StringUtils.isEmpty(username)){
+      throw new UsernameNotFoundException("No user found");
+    }
+    User user;
+    if(username.contains("@")) {
+      user = userRepository.findByEmailAddress(username);
+    } else{
+      user = userRepository.findByUsername(username);
+    }
+    if(user == null) {
+      throw new UsernameNotFoundException("No user found by `" + username + "`");
+    }
+    return new SimpleUser(user);
+  }
 
 	@Override
 	public void register(RegistrationCommand command) throws RegistrationException {
