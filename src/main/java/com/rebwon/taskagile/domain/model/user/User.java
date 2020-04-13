@@ -62,30 +62,30 @@ public class User extends AbstractBaseEntity {
     this.lastName = lastName;
   }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof User)) return false;
-		User user = (User) o;
-		return Objects.equals(username, user.username) &&
-			Objects.equals(emailAddress, user.emailAddress);
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof User)) return false;
+    User user = (User) o;
+    return Objects.equals(username, user.username) &&
+      Objects.equals(emailAddress, user.emailAddress);
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(username, emailAddress);
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hash(username, emailAddress);
+  }
 
-	@Override
-	public String toString() {
-		return "User{" +
-			"id=" + id +
-			", username='" + username + '\'' +
-			", emailAddress='" + emailAddress + '\'' +
-			", password=<Protected> " +
-			", firstName='" + firstName + '\'' +
-			", lastName='" + lastName + '\'' +
-			", createdDate=" + createdDate +
-			'}';
-	}
+  @Override
+  public String toString() {
+    return "User{" +
+      "id=" + id +
+      ", username='" + username + '\'' +
+      ", emailAddress='" + emailAddress + '\'' +
+      ", password=<Protected> " +
+      ", firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", createdDate=" + createdDate +
+      '}';
+  }
 }

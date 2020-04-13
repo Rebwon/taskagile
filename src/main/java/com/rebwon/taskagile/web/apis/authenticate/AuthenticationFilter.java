@@ -31,7 +31,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
   @Override
   public Authentication attemptAuthentication(
     HttpServletRequest request,
-    HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    HttpServletResponse response) throws AuthenticationException, IOException {
 
     log.debug("Processing login request");
 

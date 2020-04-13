@@ -11,10 +11,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class RegistrationCommand {
 	private String username;
-	private String password;
-	private String emailAddress;
+  private String password;
+  private String emailAddress;
 
-	public RegistrationCommand(String username, String password, String emailAddress) {
+  public RegistrationCommand(String username, String emailAddress, String password) {
 		Assert.hasText(username, "Parameter `username` must not be empty");
 		Assert.hasText(password, "Parameter `password` must not be empty");
 		Assert.hasText(emailAddress, "Parameter `emailAddress` must not be empty");

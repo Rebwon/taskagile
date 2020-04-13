@@ -14,7 +14,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"userId"})
 public class SimpleUser implements UserDetails, Serializable {
   private static final long serialVersionUID = -7144174657188362966L;
 

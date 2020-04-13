@@ -22,7 +22,7 @@ public class AuthenticationFilterTest {
   private AuthenticationManager authenticationManager;
 
   @Test(expected = InsufficientAuthenticationException.class)
-  public void attemptAuthentication_emptyRequestBody_shouldFail() throws IOException, ServletException {
+  public void attemptAuthentication_emptyRequestBody_shouldFail() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/api/authentications");
     AuthenticationFilter filter = new AuthenticationFilter();
     filter.setAuthenticationManager(authenticationManager);
@@ -30,7 +30,7 @@ public class AuthenticationFilterTest {
   }
 
   @Test(expected = InsufficientAuthenticationException.class)
-  public void attemptAuthentication_invalidJsonStringRequestBody_shouldFail() throws IOException, ServletException {
+  public void attemptAuthentication_invalidJsonStringRequestBody_shouldFail() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/api/authentications");
     request.setContent("username=testusername&password=TestPassword!".getBytes());
     AuthenticationFilter filter = new AuthenticationFilter();
@@ -39,7 +39,7 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void attemptAuthentication_validJsonStringRequestBody_shouldSucceed() throws IOException, ServletException {
+  public void attemptAuthentication_validJsonStringRequestBody_shouldSucceed() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/api/authentications");
     request.setContent("{\"username\": \"testusername\", \"password\": \"TestPassword!\"}".getBytes());
     AuthenticationFilter filter = new AuthenticationFilter();

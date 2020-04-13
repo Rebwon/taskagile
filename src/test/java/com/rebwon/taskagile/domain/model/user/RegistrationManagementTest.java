@@ -14,13 +14,13 @@ import com.rebwon.taskagile.domain.common.security.PasswordEncryptor;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegistrationManagementTest {
-	@Mock private UserRepository userRepository;
-	@Mock private PasswordEncryptor passwordEncryptor;
+	@Mock private UserRepository repositoryMock;
+	@Mock private PasswordEncryptor passwordEncryptorMock;
 	private RegistrationManagement registrationManagement;
 
 	@Before
 	public void setUp() throws Exception {
-		registrationManagement = new RegistrationManagement(userRepository, passwordEncryptor);
+		registrationManagement = new RegistrationManagement(repositoryMock, passwordEncryptorMock);
 	}
 
 	@Test(expected = UsernameExistsException.class)
@@ -29,7 +29,7 @@ public class RegistrationManagementTest {
 		String emailAddress = "rebwon@gmail.com";
 		String password = "password!";
 
-		when(userRepository.findByUsername(username)).thenReturn(new User());
+		when(repositoryMock.findByUsername(username)).thenReturn(new User());
 		registrationManagement.register(username, emailAddress, password);
 	}
 
@@ -39,7 +39,7 @@ public class RegistrationManagementTest {
 		String emailAddress = "exist@gmail.com";
 		String password = "password!";
 
-		when(userRepository.findByEmailAddress(emailAddress)).thenReturn(new User());
+		when(repositoryMock.findByEmailAddress(emailAddress)).thenReturn(new User());
 		registrationManagement.register(username, emailAddress, password);
 	}
 
@@ -50,8 +50,8 @@ public class RegistrationManagementTest {
 		String password = "password!";
 
 		registrationManagement.register(username, emailAddress, password);
-		User user = User.create(username, emailAddress, password);
-		verify(userRepository).save(user);
+		User user = User.create(username, emailAddress.toLowerCase(), password);
+		verify(repositoryMock).save(user);
 	}
 
 	@Test
@@ -62,17 +62,17 @@ public class RegistrationManagementTest {
 		String encryptedPassword = "EncryptedPassword";
 		User user = User.create(username, emailAddress, encryptedPassword);
 
-		when(userRepository.findByUsername(username)).thenReturn(null);
-		when(userRepository.findByEmailAddress(emailAddress)).thenReturn(null);
-		doNothing().when(userRepository).save(user);
-		when(passwordEncryptor.encrypt(password)).thenReturn("EncryptedPassword");
+		when(repositoryMock.findByUsername(username)).thenReturn(null);
+		when(repositoryMock.findByEmailAddress(emailAddress)).thenReturn(null);
+		doNothing().when(repositoryMock).save(user);
+		when(passwordEncryptorMock.encrypt(password)).thenReturn("EncryptedPassword");
 
 		User savedUser = registrationManagement.register(username, emailAddress, password);
-		InOrder inOrder = inOrder(userRepository);
-		inOrder.verify(userRepository).findByUsername(username);
-		inOrder.verify(userRepository).findByEmailAddress(emailAddress);
-		inOrder.verify(userRepository).save(user);
-		verify(passwordEncryptor).encrypt(password);
+		InOrder inOrder = inOrder(repositoryMock);
+		inOrder.verify(repositoryMock).findByUsername(username);
+		inOrder.verify(repositoryMock).findByEmailAddress(emailAddress);
+		inOrder.verify(repositoryMock).save(user);
+		verify(passwordEncryptorMock).encrypt(password);
 		assertEquals("Saved user's password should be encrypted", encryptedPassword, savedUser.getPassword());
 	}
 }
