@@ -46,19 +46,23 @@ public class User extends AbstractBaseEntity {
 	@Column(name = "created_date", nullable = false)
 	private Date createdDate;
 
-	public static User create(String username, String emailAddress, String password) {
+	public static User create(String username, String emailAddress, String firstName, String lastName, String password) {
 		User user = new User();
 		user.username = username;
 		user.emailAddress = emailAddress;
 		user.password = password;
-		user.firstName = "";
-		user.lastName = "";
+		user.firstName = firstName;
+		user.lastName = lastName;
 		user.createdDate = new Date();
 		return user;
 	}
 
 	public UserId getId() {
 	  return new UserId(id);
+  }
+
+  public String getInitials() {
+    return (firstName.substring(0, 1) + lastName.substring(0, 1)).toUpperCase();
   }
 
   public void updateName(String firstName, String lastName) {

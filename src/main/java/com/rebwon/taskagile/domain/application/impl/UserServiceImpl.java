@@ -16,6 +16,7 @@ import com.rebwon.taskagile.domain.model.user.RegistrationException;
 import com.rebwon.taskagile.domain.model.user.RegistrationManagement;
 import com.rebwon.taskagile.domain.model.user.SimpleUser;
 import com.rebwon.taskagile.domain.model.user.User;
+import com.rebwon.taskagile.domain.model.user.UserId;
 import com.rebwon.taskagile.domain.model.user.UserRepository;
 import com.rebwon.taskagile.domain.model.user.events.UserRegisteredEvent;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,12 @@ public class UserServiceImpl implements UserService {
     return new SimpleUser(user);
   }
 
-	@Override
+  @Override
+  public User findById(UserId userId) {
+    return userRepository.findById(userId);
+  }
+
+  @Override
 	public void register(RegistrationCommand command) throws RegistrationException {
 		Assert.notNull(command, "Parameter `command` must not be null");
 		User newUser = registrationManagement.register(

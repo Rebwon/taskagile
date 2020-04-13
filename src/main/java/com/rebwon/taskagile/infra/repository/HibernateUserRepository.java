@@ -6,6 +6,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.rebwon.taskagile.domain.model.user.User;
+import com.rebwon.taskagile.domain.model.user.UserId;
 import com.rebwon.taskagile.domain.model.user.UserRepository;
 
 @Repository
@@ -28,4 +29,11 @@ public class HibernateUserRepository extends HibernateSupport<User> implements U
 		query.setParameter("emailAddress", emailAddress);
 		return query.uniqueResult();
 	}
+
+  @Override
+  public User findById(UserId userId) {
+    Query<User> query = getSession().createQuery("from User where id = :id", User.class);
+    query.setParameter("id", userId.value());
+    return query.uniqueResult();
+  }
 }

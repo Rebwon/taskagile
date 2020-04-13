@@ -9,12 +9,17 @@ import org.springframework.http.ResponseEntity;
 
 import com.rebwon.taskagile.domain.model.board.Board;
 import com.rebwon.taskagile.domain.model.team.Team;
-import com.rebwon.taskagile.domain.model.user.SimpleUser;
+import com.rebwon.taskagile.domain.model.user.User;
 
 public class MyDataResult {
-  public static ResponseEntity<ApiResult> build(SimpleUser currentUser, List<Team> teams, List<Board> boards) {
-    Map<String, Object> user = new HashMap<>();
-    user.put("name", currentUser.getUsername());
+  public static ResponseEntity<ApiResult> build(User user, List<Team> teams, List<Board> boards,
+    String realTimeServerUrl, String realTimeToken) {
+    Map<String, Object> userData = new HashMap<>();
+    userData.put("name", user.getFirstName() + " " + user.getLastName());
+    userData.put("token", realTimeToken);
+
+    Map<String, Object> settings = new HashMap<>();
+    settings.put("realTimeServerUrl", realTimeServerUrl);
 
     List<TeamResult> teamResults = new ArrayList<>();
     for(Team team : teams) {
@@ -29,7 +34,8 @@ public class MyDataResult {
     ApiResult apiResult = ApiResult.blank()
       .add("user", user)
       .add("teams", teamResults)
-      .add("boards", boardResults);
+      .add("boards", boardResults)
+      .add("settings", settings);
 
     return Result.ok(apiResult);
   }

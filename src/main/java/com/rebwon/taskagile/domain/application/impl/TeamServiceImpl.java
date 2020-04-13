@@ -9,6 +9,7 @@ import com.rebwon.taskagile.domain.application.TeamService;
 import com.rebwon.taskagile.domain.application.commands.CreateTeamCommand;
 import com.rebwon.taskagile.domain.common.event.DomainEventPublisher;
 import com.rebwon.taskagile.domain.model.team.Team;
+import com.rebwon.taskagile.domain.model.team.TeamId;
 import com.rebwon.taskagile.domain.model.team.TeamRepository;
 import com.rebwon.taskagile.domain.model.team.event.TeamCreatedEvent;
 import com.rebwon.taskagile.domain.model.user.UserId;
@@ -33,5 +34,10 @@ public class TeamServiceImpl implements TeamService {
     teamRepository.save(team);
     domainEventPublisher.publish(new TeamCreatedEvent(this, team));
     return team;
+  }
+
+  @Override
+  public Team findById(TeamId teamId) {
+    return teamRepository.findById(teamId);
   }
 }
