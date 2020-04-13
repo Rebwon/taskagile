@@ -1,0 +1,24 @@
+package com.rebwon.taskagile.domain.model.board;
+
+import org.springframework.stereotype.Component;
+
+import com.rebwon.taskagile.domain.model.team.TeamId;
+import com.rebwon.taskagile.domain.model.user.UserId;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class BoardManagement {
+  private final BoardRepository boardRepository;
+  private final BoardMemberRepository boardMemberRepository;
+
+  public Board createBoard(UserId creatorId, String name, String description, TeamId teamId) {
+    Board board = Board.create(creatorId, name,
+      description, teamId);
+    boardRepository.save(board);
+    // 보드를 생성한 유저를 보드 멤버로 등록
+    BoardMember boardMember = BoardMember.create(board.getId(), creatorId);
+    boardMemberRepository.save(boardMember);
+    return board;
+  }
+}
