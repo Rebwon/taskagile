@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.rebwon.taskagile.domain.model.board.BoardId;
 import com.rebwon.taskagile.domain.model.card.Card;
 import com.rebwon.taskagile.utils.JsonUtils;
+import com.rebwon.taskagile.web.socket.SubscriptionHub;
 
 @Component
 public class CardUpdater {

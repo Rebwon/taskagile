@@ -58,6 +58,8 @@ public class UserServiceImpl implements UserService {
 		User newUser = registrationManagement.register(
 			command.getUsername(),
 			command.getEmailAddress(),
+			command.getFirstName(),
+			command.getLastName(),
 			command.getPassword()
 		);
 

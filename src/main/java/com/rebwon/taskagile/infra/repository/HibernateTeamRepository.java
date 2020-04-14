@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.rebwon.taskagile.domain.model.team.Team;
+import com.rebwon.taskagile.domain.model.team.TeamId;
 import com.rebwon.taskagile.domain.model.team.TeamRepository;
 import com.rebwon.taskagile.domain.model.user.UserId;
 
@@ -30,5 +32,12 @@ public class HibernateTeamRepository extends HibernateSupport<Team> implements T
     NativeQuery<Team> query = getSession().createNativeQuery(sql, Team.class);
     query.setParameter("userId", userId.value());
     return query.list();
+  }
+
+  @Override
+  public Team findById(TeamId teamId) {
+    Query<Team> query = getSession().createQuery("from Team where id = :id", Team.class);
+    query.setParameter("id", teamId.value());
+    return query.uniqueResult();
   }
 }

@@ -27,30 +27,36 @@ public class RegistrationManagementTest {
 	public void register_existedUsername_shouldFail() throws RegistrationException {
 		String username = "existUsername";
 		String emailAddress = "rebwon@gmail.com";
+		String firstName = "kim";
+		String lastName = "chulsu";
 		String password = "password!";
 
 		when(repositoryMock.findByUsername(username)).thenReturn(new User());
-		registrationManagement.register(username, emailAddress, password);
+		registrationManagement.register(username, emailAddress, firstName, lastName, password);
 	}
 
 	@Test(expected = EmailAddressExistsException.class)
 	public void register_existedEmailAddress_shouldFail() throws RegistrationException {
 		String username = "rebwon";
 		String emailAddress = "exist@gmail.com";
+    String firstName = "kim";
+    String lastName = "chulsu";
 		String password = "password!";
 
 		when(repositoryMock.findByEmailAddress(emailAddress)).thenReturn(new User());
-		registrationManagement.register(username, emailAddress, password);
+		registrationManagement.register(username, emailAddress, firstName, lastName, password);
 	}
 
 	@Test
 	public void register_uppercaseEmailAddress_shouldSucceedAndBecomeLowercase() throws RegistrationException {
 		String username = "rebwon";
 		String emailAddress = "Rebwon@GmaIl.com";
+    String firstName = "kim";
+    String lastName = "chulsu";
 		String password = "password!";
 
-		registrationManagement.register(username, emailAddress, password);
-		User user = User.create(username, emailAddress.toLowerCase(), password);
+		registrationManagement.register(username, emailAddress, firstName, lastName, password);
+		User user = User.create(username, emailAddress.toLowerCase(), firstName, lastName, password);
 		verify(repositoryMock).save(user);
 	}
 
@@ -58,16 +64,18 @@ public class RegistrationManagementTest {
 	public void register_newUser_shouldSucceed() throws RegistrationException {
 		String username = "rebwon";
 		String emailAddress = "rebwon@gmail.com";
+    String firstName = "kim";
+    String lastName = "chulsu";
 		String password = "password!";
 		String encryptedPassword = "EncryptedPassword";
-		User user = User.create(username, emailAddress, encryptedPassword);
+		User user = User.create(username, emailAddress, firstName, lastName, encryptedPassword);
 
 		when(repositoryMock.findByUsername(username)).thenReturn(null);
 		when(repositoryMock.findByEmailAddress(emailAddress)).thenReturn(null);
 		doNothing().when(repositoryMock).save(user);
 		when(passwordEncryptorMock.encrypt(password)).thenReturn("EncryptedPassword");
 
-		User savedUser = registrationManagement.register(username, emailAddress, password);
+		User savedUser = registrationManagement.register(username, emailAddress, firstName, lastName, password);
 		InOrder inOrder = inOrder(repositoryMock);
 		inOrder.verify(repositoryMock).findByUsername(username);
 		inOrder.verify(repositoryMock).findByEmailAddress(emailAddress);
