@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 public abstract class DomainEvent implements Serializable {
-	private static final long serialVersionUID = -444783093811334147L;
+	private static final long serialVersionUID = 8945128060450240352L;
 
 	private UserId userId;
 	private IpAddress ipAddress;
