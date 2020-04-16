@@ -1,19 +1,25 @@
 package com.rebwon.taskagile.domain.model.board.event;
 
-import com.rebwon.taskagile.domain.common.event.DomainEvent;
+import com.rebwon.taskagile.domain.common.event.TriggeredBy;
 import com.rebwon.taskagile.domain.model.board.Board;
+import lombok.Getter;
 
-public class BoardCreatedEvent extends DomainEvent {
-  private static final long serialVersionUID = -8698981115023240376L;
+@Getter
+public class BoardCreatedEvent extends BoardDomainEvent {
+  private static final long serialVersionUID = 533290197204620246L;
 
-  private Board board;
+  private String boardName;
 
-  public BoardCreatedEvent(Object source, Board board) {
-    super(source);
-    this.board = board;
+  public BoardCreatedEvent(Board board, TriggeredBy triggeredBy) {
+    super(board.getId(), triggeredBy);
+    this.boardName = board.getName();
   }
 
-  public Board getBoard() {
-    return board;
+  @Override
+  public String toString() {
+    return "BoardCreatedEvent{" +
+      "boardId=" + getBoardId() +
+      ", boardName='" + boardName + '\'' +
+      '}';
   }
 }

@@ -1,5 +1,6 @@
 package com.rebwon.taskagile.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -7,11 +8,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import com.rebwon.taskagile.domain.common.security.ApiRequestAccessDeniedExceptionTranslationFilter;
 import com.rebwon.taskagile.web.apis.authenticate.AuthenticationFilter;
 import com.rebwon.taskagile.web.apis.authenticate.SimpleAuthenticationFailureHandler;
 import com.rebwon.taskagile.web.apis.authenticate.SimpleAuthenticationSuccessHandler;
@@ -31,19 +36,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-      .authorizeRequests()
+      .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+      .and()
+        .authorizeRequests()
         .antMatchers(PUBLIC).permitAll()
+        .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
         .anyRequest().authenticated()
       .and()
         .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(apiRequestAccessDeniedExceptionTranslationFilter(), ExceptionTranslationFilter.class)
         .formLogin()
         .loginPage("/login")
       .and()
         .logout()
-        .logoutUrl("/logout")
+        .logoutUrl("/api/me/logout")
         .logoutSuccessHandler(logoutSuccessHandler())
       .and()
-        .csrf().disable();
+      .csrf().disable();
   }
 
   @Bean
@@ -73,5 +82,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   public LogoutSuccessHandler logoutSuccessHandler() {
     return new SimpleLogoutSuccessHandler();
+  }
+
+  public AccessDeniedHandler accessDeniedHandler() {
+    return new AccessDeniedHandlerImpl();
+  }
+
+  public ApiRequestAccessDeniedExceptionTranslationFilter apiRequestAccessDeniedExceptionTranslationFilter() {
+    return new ApiRequestAccessDeniedExceptionTranslationFilter();
   }
 }
