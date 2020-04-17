@@ -20,4 +20,8 @@ public class TempFile {
   public File getFile() {
     return new File(rootTempPath + "/" + fileRelativePath);
   }
+
+  public String tempRootPath() {
+    return rootTempPath;
+  }
 }
