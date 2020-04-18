@@ -1,7 +1,6 @@
 package com.rebwon.taskagile.domain.application.commands;
 
 import com.rebwon.taskagile.domain.model.board.BoardId;
-import com.rebwon.taskagile.domain.model.user.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddCardListCommand {
-  private BoardId boardId;
-  private UserId userId;
+public class AddCardListCommand extends UserCommand{
   private String name;
+  private BoardId boardId;
   private int position;
 }

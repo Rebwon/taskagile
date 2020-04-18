@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class RegistrationCommand {
+public class RegistrationCommand extends AnonymousCommand {
   private String username;
   private String emailAddress;
   private String firstName;

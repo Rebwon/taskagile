@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rebwon.taskagile.domain.application.BoardService;
+import com.rebwon.taskagile.domain.application.commands.AddBoardMemberCommand;
 import com.rebwon.taskagile.domain.application.commands.CreateBoardCommand;
 import com.rebwon.taskagile.domain.common.event.DomainEventPublisher;
 import com.rebwon.taskagile.domain.model.board.Board;
@@ -52,15 +53,15 @@ public class BoardServiceImpl implements BoardService {
   public Board createBoard(CreateBoardCommand command) {
     Board board = boardManagement.createBoard(command.getUserId(), command.getName(),
       command.getDescription(), command.getTeamId());
-    domainEventPublisher.publish(new BoardCreatedEvent(this, board));
+    domainEventPublisher.publish(new BoardCreatedEvent(board, command));
     return board;
   }
 
   @Override
-  public User addMember(BoardId boardId, String usernameOrEmailAddress) throws UserNotFoundException {
-    User user = userFinder.find(usernameOrEmailAddress);
-    boardMemberRepository.add(boardId, user.getId());
-    domainEventPublisher.publish(new BoardMemberAddedEvent(this, boardId, user));
+  public User addMember(AddBoardMemberCommand command) throws UserNotFoundException {
+    User user = userFinder.find(command.getUsernameOrEmailAddress());
+    boardMemberRepository.add(command.getBoardId(), user.getId());
+    domainEventPublisher.publish(new BoardMemberAddedEvent(command.getBoardId(), user, command));
     return user;
   }
 }

@@ -33,7 +33,7 @@ public class CardListServiceImpl implements CardListService {
     CardList cardList = CardList.create(command.getBoardId(),
       command.getUserId(), command.getName(), command.getPosition());
     cardListRepository.save(cardList);
-    domainEventPublisher.publish(new CardListAddedEvent(this, cardList));
+    domainEventPublisher.publish(new CardListAddedEvent(cardList, command));
     return cardList;
   }
 

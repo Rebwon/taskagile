@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 		);
 
 		sendWelcomeMessage(newUser);
-		domainEventPublisher.publish(new UserRegisteredEvent(newUser));
+		domainEventPublisher.publish(new UserRegisteredEvent(newUser, command));
 	}
 
 	private void sendWelcomeMessage(User user) {

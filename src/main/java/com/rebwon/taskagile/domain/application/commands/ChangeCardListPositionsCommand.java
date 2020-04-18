@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeCardListPositionsCommand {
+public class ChangeCardListPositionsCommand extends UserCommand {
   private BoardId boardId;
   private List<CardListPosition> cardListPositions;
 }
