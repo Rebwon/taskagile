@@ -1,8 +1,6 @@
 package com.rebwon.taskagile.infra.mail;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,11 +10,11 @@ import org.springframework.util.Assert;
 
 import com.rebwon.taskagile.domain.common.mail.Mailer;
 import com.rebwon.taskagile.domain.common.mail.Message;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class AsyncMailer implements Mailer {
-  private static final Logger log = LoggerFactory.getLogger(AsyncMailer.class);
-
   private JavaMailSender mailSender;
 
   public AsyncMailer(JavaMailSender mailSender) {

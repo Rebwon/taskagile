@@ -9,13 +9,13 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class AbstractBaseFileStorage implements FileStorage {
-  private static final Logger log = LoggerFactory.getLogger(AbstractBaseFileStorage.class);
 
   protected TempFile saveMultipartFileToLocalTempFolder(String rootTempPath, String folder, MultipartFile multipartFile) {
     Path storagePath = Paths.get(rootTempPath, folder).toAbsolutePath().normalize();

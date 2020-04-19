@@ -1,7 +1,5 @@
 package com.rebwon.taskagile.domain.model.activity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.rebwon.taskagile.domain.common.event.DomainEvent;
@@ -12,10 +10,11 @@ import com.rebwon.taskagile.domain.model.card.event.CardAddedEvent;
 import com.rebwon.taskagile.domain.model.card.event.CardDescriptionChangedEvent;
 import com.rebwon.taskagile.domain.model.card.event.CardTitleChangedEvent;
 import com.rebwon.taskagile.domain.model.cardlist.event.CardListAddedEvent;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class DomainEventToActivityConverter {
-  private static final Logger log = LoggerFactory.getLogger(DomainEventToActivityConverter.class);
 
   /**
    * Convert a domain event to the corresponding activity

@@ -3,8 +3,6 @@ package com.rebwon.taskagile.domain.common.mail;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -12,11 +10,11 @@ import org.springframework.util.Assert;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class DefaultMailManager implements MailManager{
-  private final static Logger log = LoggerFactory.getLogger(DefaultMailManager.class);
-
   private String mailFrom;
   private Mailer mailer;
   private Configuration configuration;

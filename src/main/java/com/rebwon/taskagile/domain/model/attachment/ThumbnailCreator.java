@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -16,10 +14,11 @@ import com.rebwon.taskagile.domain.common.file.FileStorage;
 import com.rebwon.taskagile.domain.common.file.TempFile;
 import com.rebwon.taskagile.utils.ImageUtils;
 import com.rebwon.taskagile.utils.Size;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class ThumbnailCreator {
-  private final static Logger log = LoggerFactory.getLogger(ThumbnailCreator.class);
   private final static Set<String> SUPPORTED_EXTENSIONS = new HashSet<>();
   private final static int MAX_WIDTH = 300;
   private final static int MAX_HEIGHT = 300;

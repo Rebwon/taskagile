@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.rebwon.taskagile.domain.model.board.BoardId;
 import com.rebwon.taskagile.domain.model.cardlist.CardList;
+import com.rebwon.taskagile.domain.model.cardlist.CardListId;
 import com.rebwon.taskagile.domain.model.cardlist.CardListPosition;
 import com.rebwon.taskagile.domain.model.cardlist.CardListRepository;
 
@@ -23,6 +24,11 @@ public class HibernateCardListRepository extends HibernateSupport<CardList> impl
   HibernateCardListRepository(EntityManager entityManager, JdbcTemplate jdbcTemplate) {
     super(entityManager);
     this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public CardList findById(CardListId cardListId) {
+    return getSession().find(CardList.class, cardListId.value());
   }
 
   @Override

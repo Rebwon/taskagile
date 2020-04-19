@@ -1,7 +1,5 @@
 package com.rebwon.taskagile.infra.file.s3;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -19,11 +17,11 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.rebwon.taskagile.domain.common.file.AbstractBaseFileStorage;
 import com.rebwon.taskagile.domain.common.file.FileStorageException;
 import com.rebwon.taskagile.domain.common.file.TempFile;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component("s3FileStorage")
 public class S3FileStorage extends AbstractBaseFileStorage {
-  private static final Logger log = LoggerFactory.getLogger(S3FileStorage.class);
-
   private Environment environment;
   private String rootTempPath;
   private AmazonS3 s3;

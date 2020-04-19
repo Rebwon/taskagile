@@ -1,7 +1,5 @@
 package com.rebwon.taskagile.infra.messaging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -10,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 import com.rebwon.taskagile.domain.common.event.DomainEvent;
 import com.rebwon.taskagile.domain.common.event.DomainEventPublisher;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class AmqpDomainEventPublisher implements DomainEventPublisher {
-  private static final Logger log = LoggerFactory.getLogger(AmqpDomainEventPublisher.class);
-
   private RabbitTemplate rabbitTemplate;
   private FanoutExchange exchange;
 

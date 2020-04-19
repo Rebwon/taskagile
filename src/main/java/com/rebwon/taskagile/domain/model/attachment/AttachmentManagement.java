@@ -3,8 +3,6 @@ package com.rebwon.taskagile.domain.model.attachment;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +13,12 @@ import com.rebwon.taskagile.domain.model.card.CardId;
 import com.rebwon.taskagile.domain.model.user.UserId;
 import com.rebwon.taskagile.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class AttachmentManagement {
-  private final static Logger log = LoggerFactory.getLogger(AttachmentManagement.class);
-
   private final FileStorageResolver fileStorageResolver;
   private final ThumbnailCreator thumbnailCreator;
   private final AttachmentRepository attachmentRepository;
