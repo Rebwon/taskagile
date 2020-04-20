@@ -7,6 +7,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,9 +23,11 @@ import com.rebwon.taskagile.domain.model.user.RegistrationException;
 import com.rebwon.taskagile.domain.model.user.RegistrationManagement;
 import com.rebwon.taskagile.domain.model.user.SimpleUser;
 import com.rebwon.taskagile.domain.model.user.User;
+import com.rebwon.taskagile.domain.model.user.UserId;
 import com.rebwon.taskagile.domain.model.user.UserRepository;
 import com.rebwon.taskagile.domain.model.user.UsernameExistsException;
 import com.rebwon.taskagile.domain.model.user.events.UserRegisteredEvent;
+import com.rebwon.taskagile.utils.IpAddress;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -142,12 +145,21 @@ public class UserServiceTest {
     String firstName = "kim";
     String lastName = "chulsu";
     String password = "MyPassword!";
-    User newUser = User.create(username, emailAddress, firstName, lastName, password);
+    User newUser = mock(User.class);
+    when(newUser.getId()).thenReturn(new UserId(1));
+    when(newUser.getEmailAddress()).thenReturn(emailAddress);
 
     when(registrationManagementMock.register(username, emailAddress, firstName, lastName, password))
       .thenReturn(newUser);
 
-    RegistrationCommand command = new RegistrationCommand(username, emailAddress, firstName, lastName, password);
+    IpAddress ipAddress = new IpAddress("127.0.0.1");
+    RegistrationCommand command = mock(RegistrationCommand.class);
+    when(command.getUsername()).thenReturn(username);
+    when(command.getEmailAddress()).thenReturn(emailAddress);
+    when(command.getFirstName()).thenReturn(firstName);
+    when(command.getLastName()).thenReturn(lastName);
+    when(command.getPassword()).thenReturn(password);
+    when(command.getIpAddress()).thenReturn(ipAddress);
 
     userServiceMock.register(command);
 
@@ -157,6 +169,12 @@ public class UserServiceTest {
       "welcome.ftl",
       MessageVariable.from("user", newUser)
     );
-    verify(domainEventPublisherMock).publish(new UserRegisteredEvent(newUser));
+
+    ArgumentCaptor<UserRegisteredEvent> argumentCaptor = ArgumentCaptor.forClass(UserRegisteredEvent.class);
+    verify(domainEventPublisherMock).publish(argumentCaptor.capture());
+
+    UserRegisteredEvent event = argumentCaptor.getValue();
+    assertEquals(newUser.getId(), event.getUserId());
+    assertEquals(ipAddress, event.getIpAddress());
   }
 }
