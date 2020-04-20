@@ -7,11 +7,11 @@ import lombok.Setter;
 
 @Setter
 public class AddCardListPayload {
-  private long boardId;
   private String name;
+  private long boardId;
   private int position;
 
-  public AddCardListCommand toCommand(UserId userId) {
-    return new AddCardListCommand(new BoardId(boardId), userId, name, position);
+  public AddCardListCommand toCommand() {
+    return new AddCardListCommand(name, new BoardId(boardId), position);
   }
 }

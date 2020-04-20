@@ -7,17 +7,19 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.rebwon.taskagile.domain.common.file.FileUrlCreator;
 import com.rebwon.taskagile.domain.model.board.Board;
 import com.rebwon.taskagile.domain.model.card.Card;
 import com.rebwon.taskagile.domain.model.cardlist.CardList;
 import com.rebwon.taskagile.domain.model.cardlist.CardListId;
 import com.rebwon.taskagile.domain.model.team.Team;
 import com.rebwon.taskagile.domain.model.user.User;
+import com.rebwon.taskagile.utils.ImageUtils;
 import lombok.Getter;
 
 public class BoardResult {
   public static ResponseEntity<ApiResult> build(Team team, Board board, List<User> members,
-    List<CardList> cardLists, List<Card> cards) {
+    List<CardList> cardLists, List<Card> cards, FileUrlCreator fileUrlCreator) {
     Map<String, Object> boardData = new HashMap<>();
     boardData.put("id", board.getId().value());
     boardData.put("name", board.getName());
@@ -35,7 +37,7 @@ public class BoardResult {
     }
 
     for (CardList cardList: cardLists) {
-      cardListsData.add(new CardListData(cardList, cardsByList.get(cardList.getId())));
+      cardListsData.add(new CardListData(cardList, cardsByList.get(cardList.getId()), fileUrlCreator));
     }
 
     ApiResult result = ApiResult.blank()
@@ -55,10 +57,12 @@ public class BoardResult {
   private static class MemberData {
     private long userId;
     private String shortName;
+    private String name;
 
     MemberData(User user) {
       this.userId = user.getId().value();
       this.shortName = user.getInitials();
+      this.name = user.getFirstName() + " " + user.getLastName();
     }
   }
 
@@ -69,13 +73,13 @@ public class BoardResult {
     private int position;
     private List<CardData> cards = new ArrayList<>();
 
-    CardListData(CardList cardList, List<Card> cards) {
+    CardListData(CardList cardList, List<Card> cards, FileUrlCreator fileUrlCreator) {
       this.id = cardList.getId().value();
       this.name = cardList.getName();
       this.position = cardList.getPosition();
       if (cards != null) {
         for (Card card: cards) {
-          this.cards.add(new CardData(card));
+          this.cards.add(new CardData(card, fileUrlCreator));
         }
       }
     }
@@ -86,11 +90,14 @@ public class BoardResult {
     private long id;
     private String title;
     private int position;
+    private String coverImage;
 
-    CardData(Card card) {
+    CardData(Card card, FileUrlCreator fileUrlCreator) {
       this.id = card.getId().value();
       this.title = card.getTitle();
       this.position = card.getPosition();
+      this.coverImage = card.hasCoverImage() ?
+        ImageUtils.getThumbnailVersion(fileUrlCreator.url(card.getCoverImage())) : "";
     }
   }
 }

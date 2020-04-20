@@ -1,5 +1,6 @@
 package com.rebwon.taskagile.web.apis;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.rebwon.taskagile.domain.application.UserService;
+import com.rebwon.taskagile.domain.application.commands.RegistrationCommand;
 import com.rebwon.taskagile.domain.model.user.EmailAddressExistsException;
 import com.rebwon.taskagile.domain.model.user.RegistrationException;
 import com.rebwon.taskagile.domain.model.user.UsernameExistsException;
@@ -18,12 +20,15 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class RegistrationApiController {
+public class RegistrationApiController extends AbstractBaseController {
 	private final UserService userService;
 
 	@PostMapping("/api/registrations")
-	public ResponseEntity<ApiResult> register(@Valid @RequestBody RegistrationPayload payload) {
+	public ResponseEntity<ApiResult> register(@Valid @RequestBody RegistrationPayload payload, HttpServletRequest request) {
 		try{
+      RegistrationCommand command = payload.toCommand();
+      addTriggeredBy(command, request);
+
 			userService.register(payload.toCommand());
 			return Result.created();
 		} catch (RegistrationException e){

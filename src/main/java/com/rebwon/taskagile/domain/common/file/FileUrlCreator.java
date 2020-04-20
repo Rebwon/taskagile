@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FileCreator {
+public class FileUrlCreator {
   private boolean isLocalStorage;
   private String cdnUrl;
 
-  public FileCreator(@Value("${app.file-storage.active}") String fileStorage,
+  public FileUrlCreator(@Value("${app.file-storage.active}") String fileStorage,
     @Value("${app.cdn.url}") String cdnUrl) {
     this.isLocalStorage = "localFileStorage".equals(fileStorage);
     this.cdnUrl = cdnUrl;
