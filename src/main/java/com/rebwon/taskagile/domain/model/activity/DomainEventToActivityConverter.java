@@ -16,12 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DomainEventToActivityConverter {
 
-  /**
-   * Convert a domain event to the corresponding activity
-   *
-   * @param event a domain event
-   * @return a corresponding activity, or null when no activity tracked by that domain event
-   */
   public Activity toActivity(DomainEvent event) {
     if(event instanceof BoardCreatedEvent){
       return BoardActivities.from((BoardCreatedEvent) event);

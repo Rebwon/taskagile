@@ -16,7 +16,6 @@ public class BoardManagement {
     Board board = Board.create(creatorId, name,
       description, teamId);
     boardRepository.save(board);
-    // 보드를 생성한 유저를 보드 멤버로 등록
     BoardMember boardMember = BoardMember.create(board.getId(), creatorId);
     boardMemberRepository.save(boardMember);
     return board;

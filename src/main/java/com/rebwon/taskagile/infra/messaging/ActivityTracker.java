@@ -22,8 +22,6 @@ public class ActivityTracker {
     log.debug("Receive domain event: " + domainEvent);
 
     Activity activity = domainEventToActivityConverter.toActivity(domainEvent);
-    // Save the activity only when there is an activity
-    // result from the domain event
     if (activity != null) {
       activityService.saveActivity(activity);
     }
